@@ -48,16 +48,6 @@ if st.button("Calculate VaR"):
     var_value = calculate_var(volatility, confidence_level)
     st.write(f"VaR at {confidence_level}% confidence level: {var_value}%")
 
-st.header("Thought Questions")
-
-st.write("""
-1. **Risk Appetite and VaR**: Explain how a company might use VaR to express its risk appetite and set risk limits.
-2. **VaR and Delta Exposure**: Describe how VaR can be defined over different time horizons and how it translates from risk appetite to Delta Exposure.
-3. **Confidence Levels and Data**: Discuss the usefulness of interpreting VaR as a bad day if data to support confidence levels of 99% and above is lacking.
-""")
-
-st.header("Confidence Level to Standard Deviations")
-
 confidence_levels = {
     95: "1.64 ≈ 1 + 2/3 = 5/3",
     98: "2.05 ≈ 2",
@@ -65,10 +55,6 @@ confidence_levels = {
     99.5: "2.58 ≈ 2.5",
     99.9: "3.09 ≈ 3"
 }
-
-st.write("The following are approximate conversions from confidence levels to standard deviations:")
-for level, conversion in confidence_levels.items():
-    st.write(f"{level}% = {conversion}")
 
 st.header("Practice Questions with Answers")
 
