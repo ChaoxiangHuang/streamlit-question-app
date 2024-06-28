@@ -2,7 +2,7 @@ import streamlit as st
 import numpy as np
 
 def annual_to_daily_vol(annual_vol):
-    return annual_vol / 16
+    return round(annual_vol / 16, 2)
 
 st.title("VaR Rule of 16 Drill App")
 
@@ -12,34 +12,25 @@ st.write("""
 There are approximately 252 trading days in a year. To adjust from annual volatility to daily volatility, we divide by the square root of 252. Since sqrt(252) ≈ 15.88, we approximate that with 16. This allows us to estimate daily volatility using simple arithmetic.
 """)
 
-# Example 1: Calculation
-st.subheader("Example 1: Calculate Daily Volatility")
-annual_vol = st.number_input("Enter Annual Volatility (in %)", value=16.0)
-if st.button("Calculate Daily Volatility"):
-    daily_vol = annual_to_daily_vol(annual_vol)
-    st.write(f"Daily Volatility: {daily_vol}%")
+# Generate random annual volatilities
+np.random.seed()  # Reset the seed for random number generation
+annual_vol_1 = round(np.random.uniform(10, 50), 2)
+annual_vol_2 = round(np.random.uniform(10, 50), 2)
+annual_vol_3 = round(np.random.uniform(10, 50), 2)
 
-# Practice Questions
-st.subheader("Practice Questions")
-st.write("Try to calculate the daily volatility for the given annual volatilities:")
+annual_vols = [annual_vol_1, annual_vol_2, annual_vol_3]
 
-annual_vol_1 = 16.0
-annual_vol_2 = 24.0
-annual_vol_3 = 32.0
-
-if st.button("Show Practice Answers"):
-    daily_vol_1 = annual_to_daily_vol(annual_vol_1)
-    daily_vol_2 = annual_to_daily_vol(annual_vol_2)
-    daily_vol_3 = annual_to_daily_vol(annual_vol_3)
-    st.write(f"Annual Volatility: {annual_vol_1}% 🡪 Daily Volatility: {daily_vol_1}%")
-    st.write(f"Annual Volatility: {annual_vol_2}% 🡪 Daily Volatility: {daily_vol_2}%")
-    st.write(f"Annual Volatility: {annual_vol_3}% 🡪 Daily Volatility: {daily_vol_3}%")
-
-# Thought Question
-st.subheader("Thought Question")
-st.write("If an asset has an annual volatility of 40%, what would be its daily volatility using the rule of 16?")
-annual_vol_question = 40.0
-if st.button("Show Answer for Thought Question"):
-    daily_vol_question = annual_to_daily_vol(annual_vol_question)
-    st.write(f"Annual Volatility: {annual_vol_question}% 🡪 Daily Volatility: {daily_vol_question}%")
+for i, annual_vol in enumerate(annual_vols, 1):
+    st.write(f"Annual Volatility {i}: {annual_vol}%")
+    user_input = st.text_input(f"Enter your calculated Daily Volatility for Annual Volatility {i}:", key=f"user_input_{i}",placeholder=f"Enter your answer here")
+    if st.button(f"Check Answer for Volatility {i}", key=f"check_answer_{i}"):
+        correct_answer = annual_to_daily_vol(annual_vol)
+        if user_input:
+            user_input = float(user_input)
+            if user_input == correct_answer:
+                st.write(f"Correct! Daily Volatility is {correct_answer}%")
+            else:
+                st.write(f"Incorrect. The correct Daily Volatility is {correct_answer}%")
+        else:
+            st.write("Please enter an answer.")
 
