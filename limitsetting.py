@@ -1,30 +1,35 @@
 import streamlit as st
+import numpy as np
 from scipy.stats import norm
 
 def calculate_notional(var_limit, confidence_level, volatility):
     z_score = norm.ppf(confidence_level / 100)
-    return var_limit / (z_score * volatility)
+    return round(var_limit / (z_score * volatility), 2)
 
 st.title("VaR Limit Setting Practice Question")
 
 st.header("Practice Question: Calculate Notional Exposure from VaR Limit")
 
-st.write("1. If the VaR limit is $100,000, the confidence level is 99%, and the volatility is 25%, what is the required notional exposure?")
-
+st.write(f" If the VaR limit is $100,000, the confidence level is 99%, and the volatility is 25%, what is the required notional exposure?")
 
 # Answer input fields for practice questions
-st.subheader("Enter your answers below:")
+st.subheader("Enter your answer below:")
 
-notional_answer1 = st.number_input("Answer for Question 1 (in $)", value=0.0, key="answer1")
+notional_answer = st.text_input(f"Answer for Question (in $)", placeholder="Enter your answer here", key="notional_answer")
 
+if st.button("Submit Answer"):
+    correct_answer = calculate_notional(100000, 99, 0.25)
+    st.write(f"Correct Answer for Question : ${correct_answer:,.2f}")
 
-if st.button("Submit Answers"):
-    correct_answer1 = calculate_notional(100000, 99, 0.25)
-    st.write(f"Correct Answer for Question 1: ${correct_answer1:,.2f}")
-
-    
-    if notional_answer1 == correct_answer1:
-        st.write("Your answer for Question 1 is correct!")
+    if notional_answer:
+        try:
+            notional_answer = float(notional_answer)
+            if notional_answer == correct_answer:
+                st.write(f"Your answer for Question is correct!")
+            else:
+                st.write(f"Your answer for Question is incorrect.")
+        except ValueError:
+            st.write("Please enter a valid number.")
     else:
-        st.write(f"Your answer for Question 1 is incorrect.")
+        st.write("Please enter an answer.")
 
